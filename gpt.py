@@ -66,12 +66,16 @@ def process_repository(repo_path, ignore_list, output_file):
                         output_file.write("-" * 4 + "\n")
                         output_file.write(f"{relative_file_path}\n")
                         output_file.write(f"{contents}\n")
+                else:  # バイナリファイルの場合
+                    output_file.write("-" * 4 + "\n")
+                    output_file.write(f"{relative_file_path} (Binary file, not included in content)\n")
+                    output_file.write("This is a binary file and its contents are not included.\n")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         # 引数が指定されていない場合のメッセージ
         print("Usage: gpt.exe /path/to/git/repository [-p /path/to/preamble.txt] [-o /path/to/output_file.txt]")
-        print("\nThis executable was created using the GPT Repository Loader from https://github.com/mpoon/gpt-repository-loader.")
+        print("\nThis executable was created using the GPT Repository Loader from https://github.com/naoya-in/gpt-repository-loader.")
         sys.exit(1)
 
     repo_path = sys.argv[1]
