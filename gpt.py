@@ -88,6 +88,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         # 引数が指定されていない場合のメッセージ
         print("Usage: gpt.exe /path/to/git/repository_or_zip [-p /path/to/preamble.txt] [-o /path/to/output_file.txt]")
+        print("\nThis executable was created using the GPT Repository Loader from https://github.com/naoya-in/gpt-repository-loader.")
         sys.exit(1)
 
     input_path = sys.argv[1]
@@ -143,3 +144,5 @@ if __name__ == "__main__":
         output_file.write("--END--")
 
     print(f"Repository contents written to {output_file_path}.")
+    
+    input("Press Enter to exit...")
