@@ -22,7 +22,7 @@ def extract_zip(zip_path, extract_to):
 # .gptignoreファイルから無視リストを取得
 def get_ignore_list(ignore_file_path):
     ignore_list = []
-    with open(ignore_file_path, 'r') as ignore_file:
+    with open(ignore_file_path, 'r', encoding='utf-8') as ignore_file:
         for line in ignore_file:
             if sys.platform == "win32":
                 line = line.replace("/", "\\")
@@ -57,13 +57,12 @@ def read_file(file_path):
         with open(file_path, 'rb') as file:
             raw_data = file.read()
         result = chardet.detect(raw_data)
-        encoding = result['encoding']
-        if encoding:
-            with open(file_path, 'r', encoding=encoding, errors='ignore') as file:
-                return file.read()
-    except Exception:
+        encoding = result['encoding'] if result['encoding'] else 'utf-8'
+        with open(file_path, 'r', encoding=encoding, errors='ignore') as file:
+            return file.read()
+    except Exception as e:
+        print(f"Error reading {file_path}: {e}")
         return None
-    return None
 
 # リポジトリ内のファイルを処理する
 def process_repository(repo_path, ignore_list, output_file):
@@ -130,9 +129,10 @@ if __name__ == "__main__":
     else:
         ignore_list = []
 
-    with open(output_file_path, 'w') as output_file:
+    # 出力ファイルをUTF-8で書き込む
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
         if preamble_file:
-            with open(preamble_file, 'r') as pf:
+            with open(preamble_file, 'r', encoding='utf-8') as pf:
                 preamble_text = pf.read()
                 output_file.write(f"{preamble_text}\n")
         else:
@@ -140,9 +140,9 @@ if __name__ == "__main__":
         process_repository(repo_path, ignore_list, output_file)
 
     # 最後に --END-- を書き込む
-    with open(output_file_path, 'a') as output_file:
+    with open(output_file_path, 'a', encoding='utf-8') as output_file:
         output_file.write("--END--")
 
     print(f"Repository contents written to {output_file_path}.")
-    
+
     input("Press Enter to exit...")
