@@ -6,6 +6,7 @@ import fnmatch
 import zipfile
 import shutil
 import chardet
+from datetime import datetime
 
 # PyInstaller のバンドルモードを考慮したパス取得
 def get_base_path():
@@ -103,9 +104,12 @@ if __name__ == "__main__":
     else:
         repo_path = input_path
 
-    # デフォルトの output.txt のパスを input_path のディレクトリに設定
+    # ファイル名生成（タイムスタンプ + 入力ファイル名）
+    input_name = os.path.splitext(os.path.basename(input_path))[0]  # 入力ファイル名
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")  # タイムスタンプ
     output_dir = os.path.dirname(os.path.abspath(input_path))
-    output_file_path = os.path.join(output_dir, 'output.txt')
+    output_file_name = f"{input_name}_{timestamp}.txt"
+    output_file_path = os.path.join(output_dir, output_file_name)
 
     if "-o" in sys.argv:
         output_file_path = sys.argv[sys.argv.index("-o") + 1]
